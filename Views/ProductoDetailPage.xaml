@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:AgenteINV.ViewModels"
+             x:Class="AgenteINV.Views.ProductoDetailPage"
+             x:DataType="viewModels:ProductoDetailViewModel"
+             Title="{Binding PageTitle}">
+
+    <ScrollView>
+        <Grid Padding="20"
+              RowDefinitions="Auto,Auto,Auto"
+              RowSpacing="18">
+            <Border Padding="16" StrokeThickness="1">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Vista previa" FontAttributes="Bold" />
+                    <Image Source="{Binding CurrentProduct.ImagenUrl}"
+                           HeightRequest="200"
+                           Aspect="AspectFit" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                  ColumnDefinitions="Auto,*"
+                  ColumnSpacing="12"
+                  RowSpacing="14">
+                <Label Text="Nombre" Grid.Row="0" Grid.Column="0" VerticalOptions="Center" />
+                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding CurrentProduct.Nombre}" Placeholder="Nombre del producto" />
+
+                <Label Text="Descripción" Grid.Row="1" Grid.Column="0" VerticalOptions="Start" />
+                <Editor Grid.Row="1" Grid.Column="1" Text="{Binding CurrentProduct.Descripcion}" AutoSize="TextChanges" Placeholder="Especificaciones y detalles" />
+
+                <Label Text="Precio" Grid.Row="2" Grid.Column="0" VerticalOptions="Center" />
+                <Entry Grid.Row="2" Grid.Column="1" Text="{Binding CurrentProduct.Precio}" Keyboard="Numeric" Placeholder="0.00" />
+
+                <Label Text="Stock" Grid.Row="3" Grid.Column="0" VerticalOptions="Center" />
+                <Entry Grid.Row="3" Grid.Column="1" Text="{Binding CurrentProduct.Stock}" Keyboard="Numeric" Placeholder="0" />
+
+                <Label Text="Imagen" Grid.Row="4" Grid.Column="0" VerticalOptions="Center" />
+                <Entry Grid.Row="4" Grid.Column="1" Text="{Binding CurrentProduct.ImagenUrl}" Placeholder="URL o ruta local" />
+
+                <Label Text="Categoría" Grid.Row="5" Grid.Column="0" VerticalOptions="Center" />
+                <Picker Grid.Row="5"
+                        Grid.Column="1"
+                        Title="Selecciona una categoría"
+                        ItemsSource="{Binding Categorias}"
+                        SelectedItem="{Binding SelectedCategoria}"
+                        ItemDisplayBinding="{Binding Nombre}" />
+            </Grid>
+
+            <VerticalStackLayout Grid.Row="2" Spacing="16">
+                <Grid ColumnDefinitions="*">
+                    <Picker HorizontalOptions="Fill"
+                            Title="Selecciona un proveedor"
+                            ItemsSource="{Binding Proveedores}"
+                            SelectedItem="{Binding SelectedProveedor}"
+                            ItemDisplayBinding="{Binding Nombre}" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Button Text="Guardar"
+                            Command="{Binding SaveCommand}"
+                            Grid.Column="0"
+                            HorizontalOptions="Fill" />
+                    <Button Text="Cancelar"
+                            Command="{Binding CancelCommand}"
+                            Grid.Column="1"
+                            HorizontalOptions="Fill" />
+                </Grid>
+
+                <Button Text="Eliminar"
+                        Command="{Binding DeleteCommand}"
+                        IsVisible="{Binding IsEditMode}"
+                        BackgroundColor="#B42318"
+                        TextColor="White" />
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>
