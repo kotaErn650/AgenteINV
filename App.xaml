@@ -1,7 +1,8 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<?xml version = "1.0" encoding = "UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:AgenteINV"
+             xmlns:models="clr-namespace:AgenteINV.Models"
+             xmlns:converters="clr-namespace:AgenteINV.Converters"
              x:Class="AgenteINV.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -9,6 +10,27 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:StockToColorConverter x:Key="StockToColorConverter" />
+
+            <DataTemplate x:Key="ProductoListItemTemplate" x:DataType="models:Producto">
+                <Border Margin="0,0,0,16" Padding="12" StrokeThickness="1">
+                    <Grid ColumnDefinitions="90,*" ColumnSpacing="14">
+                        <Image Source="{Binding ImagenUrl}"
+                               HeightRequest="80"
+                               WidthRequest="80"
+                               Aspect="AspectFit" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="18" />
+                            <Label Text="{Binding Precio, StringFormat='{0:C}'}" FontSize="16" />
+                            <Label Text="{Binding Descripcion}" LineBreakMode="TailTruncation" MaxLines="2" FontSize="12" />
+                            <Label Text="{Binding Stock, StringFormat='Stock: {0}'}"
+                                   TextColor="{Binding Stock, Converter={StaticResource StockToColorConverter}}"
+                                   FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:AgenteINV.ViewModels"
+             xmlns:handlers="clr-namespace:AgenteINV.Handlers"
+             x:Class="AgenteINV.Views.ProductosPage"
+             x:DataType="viewModels:ProductosViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Nuevo" Command="{Binding NewProductoCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Shell.SearchHandler>
+        <handlers:ProductSearchHandler Placeholder="Buscar productos"
+                                       DisplayMemberName="Nombre"
+                                       SourceProducts="{Binding Productos}"
+                                       SearchCommand="{Binding SearchProductosCommand}" />
+    </Shell.SearchHandler>
+
+    <Grid Padding="20" RowDefinitions="Auto,Auto,*">
+        <Label Text="Inventario tecnológico"
+               FontSize="24"
+               FontAttributes="Bold" />
+
+        <FlexLayout Grid.Row="1"
+                    Margin="0,16,0,16"
+                    Direction="Row"
+                    Wrap="Wrap"
+                    JustifyContent="SpaceBetween"
+                    AlignItems="Center">
+            <Border Padding="16" WidthRequest="160" Margin="0,0,12,12" StrokeThickness="1">
+                <VerticalStackLayout>
+                    <Label Text="Total productos" FontAttributes="Bold" />
+                    <Label Text="{Binding TotalProductos}" FontSize="22" />
+                </VerticalStackLayout>
+            </Border>
+            <Border Padding="16" WidthRequest="160" Margin="0,0,12,12" StrokeThickness="1">
+                <VerticalStackLayout>
+                    <Label Text="Agotados" FontAttributes="Bold" />
+                    <Label Text="{Binding ProductosAgotados}" FontSize="22" TextColor="Red" />
+                </VerticalStackLayout>
+            </Border>
+            <Border Padding="16" WidthRequest="180" Margin="0,0,12,12" StrokeThickness="1">
+                <VerticalStackLayout>
+                    <Label Text="Valor inventario" FontAttributes="Bold" />
+                    <Label Text="{Binding ValorInventario, StringFormat='{0:C}'}" FontSize="22" />
+                </VerticalStackLayout>
+            </Border>
+        </FlexLayout>
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding ProductosVisibles}"
+                        ItemTemplate="{StaticResource ProductoListItemTemplate}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedProducto}">
+            <CollectionView.EmptyView>
+                <Label Text="No se encontraron productos."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>
