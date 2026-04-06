@@ -13,6 +13,7 @@
             <Entry Text="{Binding CurrentProveedor.Nombre}" Placeholder="Nombre" />
             <Entry Text="{Binding CurrentProveedor.Contacto}" Placeholder="Contacto" />
             <Entry Text="{Binding CurrentProveedor.Direccion}" Placeholder="Dirección" />
+            <Label Text="{Binding StatusMessage}" TextColor="#B42318" />
             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
                 <Button Text="Guardar" Command="{Binding SaveCommand}" Grid.Column="0" HorizontalOptions="Fill" />
                 <Button Text="Nuevo" Command="{Binding NewCommand}" Grid.Column="1" HorizontalOptions="Fill" />

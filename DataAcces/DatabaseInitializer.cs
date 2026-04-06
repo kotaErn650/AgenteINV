@@ -14,12 +14,12 @@ public class DatabaseInitializer
         _logger = logger;
     }
 
-    public async Task InitializeAsync()
+    public void Initialize()
     {
         try
         {
-            await using var context = await _contextFactory.CreateDbContextAsync();
-            await context.Database.EnsureCreatedAsync();
+            using var context = _contextFactory.CreateDbContext();
+            context.Database.EnsureCreated();
         }
         catch (Exception ex)
         {

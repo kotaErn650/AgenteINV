@@ -11,6 +11,7 @@
         <VerticalStackLayout Spacing="12">
             <Label Text="Administrar categorías" FontSize="24" FontAttributes="Bold" />
             <Entry Text="{Binding CurrentCategoria.Nombre}" Placeholder="Nombre de la categoría" />
+            <Label Text="{Binding StatusMessage}" TextColor="#B42318" />
             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
                 <Button Text="Guardar" Command="{Binding SaveCommand}" Grid.Column="0" HorizontalOptions="Fill" />
                 <Button Text="Nuevo" Command="{Binding NewCommand}" Grid.Column="1" HorizontalOptions="Fill" />

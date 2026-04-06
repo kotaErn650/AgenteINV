@@ -11,6 +11,7 @@ public class ProveedoresViewModel : BaseViewModel
     private readonly IDbContextFactory<InventarioContext> _contextFactory;
     private Proveedor _currentProveedor = new();
     private Proveedor? _selectedProveedor;
+    private string _statusMessage = string.Empty;
 
     public ProveedoresViewModel(IDbContextFactory<InventarioContext> contextFactory)
     {
@@ -47,6 +48,12 @@ public class ProveedoresViewModel : BaseViewModel
                 ((Command)DeleteCommand).ChangeCanExecute();
             }
         }
+    }
+
+    public string StatusMessage
+    {
+        get => _statusMessage;
+        set => SetProperty(ref _statusMessage, value);
     }
 
     public ICommand SaveCommand { get; }
@@ -106,6 +113,7 @@ public class ProveedoresViewModel : BaseViewModel
             }
 
             await context.SaveChangesAsync();
+            StatusMessage = string.Empty;
             ResetForm();
             await LoadAsync();
         }
@@ -131,11 +139,17 @@ public class ProveedoresViewModel : BaseViewModel
                 .FirstOrDefaultAsync(p => p.Id == SelectedProveedor.Id);
             if (entity is not null)
             {
-                context.Productos.RemoveRange(entity.Productos);
+                if (entity.Productos.Count > 0)
+                {
+                    StatusMessage = "No se puede eliminar un proveedor con productos asociados.";
+                    return;
+                }
+
                 context.Proveedores.Remove(entity);
                 await context.SaveChangesAsync();
             }
 
+            StatusMessage = string.Empty;
             ResetForm();
             await LoadAsync();
         }

@@ -7,7 +7,7 @@ public partial class App : Application
     public App(DatabaseInitializer databaseInitializer)
     {
         InitializeComponent();
-        _ = databaseInitializer.InitializeAsync();
+        databaseInitializer.Initialize();
     }
 
     protected override Window CreateWindow(IActivationState? activationState)

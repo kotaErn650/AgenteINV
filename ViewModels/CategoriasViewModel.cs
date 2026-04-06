@@ -11,6 +11,7 @@ public class CategoriasViewModel : BaseViewModel
     private readonly IDbContextFactory<InventarioContext> _contextFactory;
     private Categoria _currentCategoria = new();
     private Categoria? _selectedCategoria;
+    private string _statusMessage = string.Empty;
 
     public CategoriasViewModel(IDbContextFactory<InventarioContext> contextFactory)
     {
@@ -41,6 +42,12 @@ public class CategoriasViewModel : BaseViewModel
                 ((Command)DeleteCommand).ChangeCanExecute();
             }
         }
+    }
+
+    public string StatusMessage
+    {
+        get => _statusMessage;
+        set => SetProperty(ref _statusMessage, value);
     }
 
     public ICommand SaveCommand { get; }
@@ -93,6 +100,7 @@ public class CategoriasViewModel : BaseViewModel
             }
 
             await context.SaveChangesAsync();
+            StatusMessage = string.Empty;
             ResetForm();
             await LoadAsync();
         }
@@ -118,11 +126,17 @@ public class CategoriasViewModel : BaseViewModel
                 .FirstOrDefaultAsync(c => c.Id == SelectedCategoria.Id);
             if (entity is not null)
             {
-                context.Productos.RemoveRange(entity.Productos);
+                if (entity.Productos.Count > 0)
+                {
+                    StatusMessage = "No se puede eliminar una categoría con productos asociados.";
+                    return;
+                }
+
                 context.Categorias.Remove(entity);
                 await context.SaveChangesAsync();
             }
 
+            StatusMessage = string.Empty;
             ResetForm();
             await LoadAsync();
         }
